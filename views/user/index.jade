@@ -1,0 +1,17 @@
+header
+div(role="main")
+	.modal-container
+		.modal-backdrop
+			.modal
+				h3 Clap Admin
+				if msg
+					p error :(
+				form#login(method="post")
+					div
+						input(type="text", name="username", placeholder="Username")
+					div
+						input(type="password", name="password", placeholder="Password")
+					div
+						input(type="submit", value="login").button
+
+footer
