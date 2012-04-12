@@ -1,8 +1,10 @@
 header
 	a(href="logout") logout
-	each app in data.apps
-		p= app.name
-		p= app.state
-		p= app.domain
 div(role="main")
+	table
+		each app in data.apps
+			tr
+				td= app.name
+				td= app.state
+				td= app.domain
 footer
