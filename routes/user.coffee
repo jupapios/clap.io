@@ -14,6 +14,19 @@ users =
 		name: "Usuario de prueba"
 		salt: "randomly-generated-salt"
 		pass: hash("demo", "randomly-generated-salt")
+		apps: [
+			{
+				name: "My first app"
+				state: true
+				domain: "test.clap.io"
+			}
+			{
+				name: "My second app"
+				state: false
+				domain: "test2.clap.io"	
+			}
+		]
+			
 
 exports.index = (req, res) ->
 	if req.session.user
@@ -21,9 +34,11 @@ exports.index = (req, res) ->
 			res.render "user/profile",
 				layout: false
 				title: "clap.io - User"
+				data: req.session.user
 		else
 			res.render "user/profile",
 				title: "clap.io - User"
+				data: req.session.user
 	else
 		res.render "user",
 			title: "clap.io - User"
