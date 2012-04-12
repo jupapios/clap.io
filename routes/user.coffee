@@ -15,7 +15,7 @@ users =
 		salt: "randomly-generated-salt"
 		pass: hash("demo", "randomly-generated-salt")
 
-exports.index = (req, res) ->	
+exports.index = (req, res) ->
 	if req.session.user
 		if req.xhr
 			res.render "user/profile",
@@ -23,7 +23,7 @@ exports.index = (req, res) ->
 				title: "clap.io - User"
 		else
 			res.render "user/profile",
-				title: "clap.io - User"		
+				title: "clap.io - User"
 	else
 		res.render "user",
 			title: "clap.io - User"
@@ -38,6 +38,7 @@ exports.login = (req, res) ->
 		else
 			res.render "user",
 				title: "clap.io - User"
+				layout: false
 				msg: true
 
 exports.logout = (req, res) ->
