@@ -5,9 +5,15 @@
 	div(role="main")
 		.box.grid-4
 			table
-				each app in data.apps
+				thead
 					tr
-						td= app.name
-						td= app.state
-						td= app.domain
+						td Name
+						td State
+						td Domain
+				tbody
+					each app in data.apps
+						tr
+							td= app.name
+							td= app.state
+							td= app.domain
 	footer
