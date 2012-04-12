@@ -73,7 +73,7 @@ td{vertical-align:top}
 .user .modal div{margin-bottom:.4em;}
 .user .modal div:last-child{margin-top:.6em}
 .user.profile header{background-color:#fff;-webkit-box-shadow:0 1px 10px rgba(0,0,0,0.25);-moz-box-shadow:0 1px 10px rgba(0,0,0,0.25);box-shadow:0 1px 10px rgba(0,0,0,0.25);padding:5px 20px;}
-.user.profile header .btn-logout{background:url("/img/logout.png") no-repeat right center;height:20px;-webkit-transition:all .5s ease-in-out;-moz-transition:all .5s ease-in-out;transition:all .5s ease-in-out;width:20px;}
+.user.profile header .btn-logout{background:url("/img/logout.png") no-repeat;height:20px;-webkit-transition:all .5s ease-in-out;-moz-transition:all .5s ease-in-out;transition:all .5s ease-in-out;width:20px;}
 .user.profile header .btn-logout:hover{-webkit-transform:rotate(-180deg);-moz-transform:rotate(-180deg);transform:rotate(-180deg)}
 .user.profile div[role="main"]{padding:20px;}
 .user.profile div[role="main"] .box{border:1px solid rgba(0,0,0,0.20);-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;padding:10px}
