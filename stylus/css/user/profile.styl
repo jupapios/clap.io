@@ -1,0 +1,22 @@
+.user.profile
+	header
+		background-color white
+		box-shadow 0 1px 10px rgba(0, 0, 0, 0.25)
+		padding 5px 20px
+
+		.btn-logout
+			background url('/img/logout.png') no-repeat right center
+			height 20px
+			transition all 0.5s ease-in-out
+			width @height
+
+			&:hover
+				transform rotate(-180deg)
+
+	div[role="main"]
+		padding 20px
+
+		.box
+			border 1px solid rgba(0, 0, 0, 0.20)
+			border-radius 5px
+			padding 10px

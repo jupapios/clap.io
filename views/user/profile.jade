@@ -1,10 +1,13 @@
-header
-	a(href="logout") logout
-div(role="main")
-	table
-		each app in data.apps
-			tr
-				td= app.name
-				td= app.state
-				td= app.domain
-footer
+.user.profile
+	header
+		a.right.btn-logout(href="/logout")
+		.clearfix
+	div(role="main")
+		.box.grid-4
+			table
+				each app in data.apps
+					tr
+						td= app.name
+						td= app.state
+						td= app.domain
+	footer
