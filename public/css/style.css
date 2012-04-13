@@ -68,10 +68,12 @@ td{vertical-align:top}
 .user.profile header .btn-logout{background:url("/img/logout.png") no-repeat;height:20px;-webkit-transition:all .5s ease-in-out;-moz-transition:all .5s ease-in-out;transition:all .5s ease-in-out;width:20px;}
 .user.profile header .btn-logout:hover{-webkit-transform:rotate(-180deg);-moz-transform:rotate(-180deg);transform:rotate(-180deg)}
 .user.profile div[role="main"]{padding:20px;padding-top:50px;}
-.user.profile div[role="main"] .box{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-box-shadow:0 1px 10px rgba(0,0,0,0.25);-moz-box-shadow:0 1px 10px rgba(0,0,0,0.25);box-shadow:0 1px 10px rgba(0,0,0,0.25);-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;float:left;padding:10px;margin-right:20px;margin-bottom:20px}
-.user.profile div[role="main"] .menu{width:25%}
+.user.profile div[role="main"] .box{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-box-shadow:0 1px 10px rgba(0,0,0,0.25);-moz-box-shadow:0 1px 10px rgba(0,0,0,0.25);box-shadow:0 1px 10px rgba(0,0,0,0.25);-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;float:left;padding:10px;margin-bottom:20px}
+.user.profile div[role="main"] .menu{margin-right:20px;width:25%}
 .user.profile div[role="main"] .content{width:72%}
-.ir{display:block;border:0;text-indent:-999em;overflow:hidden;background-color:transparent;background-repeat:no-repeat;text-align:left;direction:ltr;*line-height:0;}
+@media only screen and (max-width: 720px){.user.profile div[role="main"] .menu{width:100%}
+.user.profile div[role="main"] .content{width:100%}
+}.ir{display:block;border:0;text-indent:-999em;overflow:hidden;background-color:transparent;background-repeat:no-repeat;text-align:left;direction:ltr;*line-height:0;}
 .ir br{display:none}
 .hidden{display:none;visibility:hidden}
 .visuallyhidden{border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;}
