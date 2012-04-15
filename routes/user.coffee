@@ -1,55 +1,81 @@
 crypto = require("crypto")
+Db = require('mongodb').Db
+Server = require('mongodb').Server
+
+
+users = {}
+db = new Db('clap', new Server("127.0.0.1", 27017, {auto_reconnect: false, poolSize: 4}), {native_parser: false})
 
 authenticate = (name, pass, fn) ->
-	user = users[name]
-	return fn(new Error('cannot find user')) unless user
-	return fn(null, user) if user.pass == hash(pass, user.salt)
-	return fn(new Error('invalid password'))
+	db.open (err, db) ->
+		db.createCollection 'users', (err, collection) ->
+			collection.find({user:name}).toArray (err, docs) ->
+				user = docs[0]
+				db.close()
+				if typeof user == 'undefined'
+					return fn(new Error('cannot find user'))
+				if user.pass == hash(pass, user.salt)
+					delete user._id
+					delete user.pass
+					delete user.salt
+					return fn(null, user)
+				fn(new Error('invalid password'))
 
 hash = (msg, key) ->
 	crypto.createHmac("sha256", key).update(msg).digest "hex"
 
-users = 
-	demo:
-		name: "Usuario de prueba"
-		salt: "randomly-generated-salt"
-		pass: hash("demo", "randomly-generated-salt")
-		apps: [
-			{
-				name: "My first app"
-				state: true
-				domain: "test.clap.io"
-			}
-			{
-				name: "My second app"
-				state: false
-				domain: "test2.clap.io"	
-			}
-		]
-			
-
 exports.index = (req, res) ->
 	if req.session.user
-		if req.xhr
-			res.render "user/profile",
-				layout: false
-				title: "clap.io - User"
-				data: req.session.user
-		else
-			res.render "user/profile",
-				title: "clap.io - User"
-				data: req.session.user
+		res.redirect "/user/apps/"
 	else
 		res.render "user",
 			title: "clap.io - User"
 			msg: false
+
+exports.modify_app = (req, res) ->
+	if req.session.user
+		#console.log req.session.user
+		id = req.params.id || 0
+		console.log req.session.user.apps[id].domain = req.body.appdomain
+		db.open (err, db) ->
+			db.createCollection 'users', (err, collection) ->
+				collection.findAndModify {user: req.session.user.user},  [], {$set:req.session.user}, {new:true, upsert:true}, (err, doc) ->
+					#console.log req.session.user
+					res.redirect("back")
+	else
+		res.json({msg: 'security error'})
+
+exports.apps = (req, res) ->
+	if req.session.user
+		if req.xhr
+			res.render "user/apps",
+				layout: false
+				title: "clap.io - User"
+				data: req.session.user
+		else
+			if req.params.id
+				res.render "user/apps",
+					title: "clap.io - User"
+					data: req.session.user
+					locals:
+						id: req.params.id
+			else
+				res.render "user/apps",
+					title: "clap.io - User"
+					data: req.session.user
+	else
+		res.redirect "/user/"
+
 
 exports.login = (req, res) ->
 	authenticate req.body.username, req.body.password, (err, user) ->
 		if user
 			req.session.regenerate ->
 				req.session.user = user
-				res.redirect "/user"
+				res.render "user/apps",
+					layout: false
+					title: "clap.io - User"
+					data: req.session.user
 		else
 			res.render "user",
 				title: "clap.io - User"
@@ -58,4 +84,4 @@ exports.login = (req, res) ->
 
 exports.logout = (req, res) ->
 	req.session.destroy ->
-		res.redirect "/user"
+		res.redirect "/user/"

@@ -1,0 +1,72 @@
+.user.profile
+	header
+		a.right.btn-logout(href="/logout/")
+		.clearfix
+	div(role="main")
+		.box.menu
+			h3 your apps
+				.btn-newapp.right(onclick="listen.newapp()")
+			for app, i in data.apps
+				div.clearfix(data-app=i, onclick="listen.appclick(this)")
+					span= app.name
+					if app.state == true
+						span.btn.green running
+					else
+						span.btn.red stopped
+		.apps
+			if locals.id == "new"
+				.box.block.content.new_app
+					.modal
+						h3 Create new application
+						form(method="post")
+							div
+								input(type="text", name="appname", placeholder="app name")
+							div
+								input(type="text", name="appdomain", placeholder="app domain")
+							div
+								input(type="submit", value="create").button
+			else
+				.box.content.new_app
+					.modal
+						h3 Create application
+						form(method="post")
+							div
+								input(type="text", name="appname", placeholder="app name")
+							div
+								input(type="text", name="appdomain", placeholder="app domain")
+							div
+								input(type="submit", value="create").button
+
+			for app, i in data.apps
+				if locals.id
+					id = locals.id
+				else
+					id = 0
+				if id == i
+					div(class="block box content app-"+i)
+						.modal
+							h3= app.name
+							form(method="post")
+								div
+									input(type="text", name="appdomain", placeholder="app domain", value=app.domain)
+								div
+									input(type="submit", value="save").button					
+							if app.state == true
+								p running
+							else
+								p stopped
+				else
+					div(class="box content app-"+i)
+						.modal
+							h3= app.name
+							form(method="post")
+								div
+									input(type="text", name="appdomain", placeholder="app domain", value=app.domain)
+								div
+									input(type="submit", value="save").button					
+							if app.state == true
+								p running
+							else
+								p stopped
+
+	footer

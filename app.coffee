@@ -55,13 +55,19 @@ app.get '/js/:file.js', (req, res) ->
 		res.header 'Content-Type', 'application/x-javascript'
 		res.send js
 	catch error
+		res.writeHead 404
+		res.end
 
 # Routes
 
 app.get "/", routes.home.index
-app.get "/user", routes.user.index
-app.post "/user", routes.user.login
-app.all "/logout", routes.user.logout
+app.post "/user/apps/:id", routes.user.modify_app
+app.get "/user/apps/:id", routes.user.apps
+app.post "/user/apps/", routes.user.modify_app
+app.get "/user/apps/", routes.user.apps
+app.get "/user/", routes.user.index
+app.post "/user/", routes.user.login
+app.all "/logout/", routes.user.logout
 
 app.listen 3000, ->
 	console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env

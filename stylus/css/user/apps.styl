@@ -1,0 +1,92 @@
+.user.profile
+	header
+		background-color white
+		box-shadow 0 1px 10px rgba(0, 0, 0, 0.25)
+		box-sizing border-box
+		padding 5px 20px
+		position fixed
+		width 100%
+
+		.btn-logout
+			background url('/img/logout.png') no-repeat
+			height 20px
+			transition all 0.5s ease-in-out
+			width @height
+
+			&:hover
+				transform rotate(-180deg)
+
+	div[role="main"]
+		padding 20px
+		padding-top 50px
+
+		.btn-newapp
+			background black url('/img/add.png') no-repeat center center
+			cursor pointer
+			height 20px
+			transition all 0.7s linear
+			width @height
+
+			&:hover
+				transform rotate(-180deg)
+
+
+		.btn
+			padding 3px 7px
+			display inline
+			border none
+			color white
+			font-size 0.7em
+			border-radius 5px
+			text-shadow 1px 1px #666
+			text-align center
+			transition all 100ms linear
+			width 40px
+			
+			&:hover
+				opacity 0.8
+
+			&.green
+				background-color #58AA00
+
+			&.red
+				background-color #E50000
+
+		.box
+			box-sizing border-box
+			box-shadow 0 1px 10px rgba(0,0,0,0.25)
+			border-radius 5px
+			float left
+			padding 10px
+			margin-bottom col-1
+			text-align center
+
+		.apps > div
+			display none
+
+		.block
+			display block !important
+
+		.menu
+			margin-right col-1
+			width 25%
+
+			& > div
+				cursor pointer
+				margin-bottom 0.3em
+				span
+					&:first-child
+						float left
+					&:last-child
+						float right
+
+		.content
+			width 72%
+
+@media only screen and (max-width: 720px)
+	.user.profile
+		div[role="main"]
+			.menu
+				width 100%
+			.content
+				width 100%
