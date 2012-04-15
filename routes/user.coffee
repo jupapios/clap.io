@@ -8,21 +8,31 @@ db = new Db('clap', new Server("127.0.0.1", 27017, {auto_reconnect: false, poolS
 
 authenticate = (name, pass, fn) ->
 	db.open (err, db) ->
-		db.createCollection 'users', (err, collection) ->
-			collection.find({user:name}).toArray (err, docs) ->
-				user = docs[0]
-				db.close()
-				if typeof user == 'undefined'
-					return fn(new Error('cannot find user'))
-				if user.pass == hash(pass, user.salt)
-					delete user._id
-					delete user.pass
-					delete user.salt
-					return fn(null, user)
-				fn(new Error('invalid password'))
+		if db
+			db.createCollection 'users', (err, collection) ->
+				collection.find({user:name}).toArray (err, docs) ->
+					user = docs[0]
+					db.close()
+					if typeof user == 'undefined'
+						return fn(new Error('cannot find user'))
+					if user.pass == hash(pass, user.salt)
+						delete user._id
+						delete user.pass
+						delete user.salt
+						return fn(null, user)
+					fn(new Error('invalid password'))
+		else
+			fn(new Error('start db'))
 
 hash = (msg, key) ->
 	crypto.createHmac("sha256", key).update(msg).digest "hex"
+
+update_db = (req, res) ->
+	db.open (err, db) ->
+		db.createCollection 'users', (err, collection) ->
+			collection.findAndModify {user: req.session.user.user},  [], {$set:req.session.user}, {new:true, upsert:true}, (err, doc) ->
+				#console.log req.session.user
+				res.redirect("back")
 
 exports.index = (req, res) ->
 	if req.session.user
@@ -32,16 +42,22 @@ exports.index = (req, res) ->
 			title: "clap.io - User"
 			msg: false
 
+exports.new_app = (req, res) ->
+	if req.session.user
+		req.session.user.apps.push
+			name: req.body.appname
+			state: true
+			domain: req.body.appdomain
+		update_db(req, res)
+
+	else
+		res.json({msg: 'security error'})		
+
 exports.modify_app = (req, res) ->
 	if req.session.user
-		#console.log req.session.user
 		id = req.params.id || 0
-		console.log req.session.user.apps[id].domain = req.body.appdomain
-		db.open (err, db) ->
-			db.createCollection 'users', (err, collection) ->
-				collection.findAndModify {user: req.session.user.user},  [], {$set:req.session.user}, {new:true, upsert:true}, (err, doc) ->
-					#console.log req.session.user
-					res.redirect("back")
+		req.session.user.apps[id].domain = req.body.appdomain
+		update_db(req, res)
 	else
 		res.json({msg: 'security error'})
 

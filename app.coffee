@@ -61,6 +61,7 @@ app.get '/js/:file.js', (req, res) ->
 # Routes
 
 app.get "/", routes.home.index
+app.post "/user/apps/new", routes.user.new_app
 app.post "/user/apps/:id", routes.user.modify_app
 app.get "/user/apps/:id", routes.user.apps
 app.post "/user/apps/", routes.user.modify_app
