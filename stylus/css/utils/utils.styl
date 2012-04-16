@@ -3,3 +3,29 @@
 
 .left
 	float left
+
+.ico
+	cursor pointer
+	display inline-block
+	height 20px
+	transition all .5s linear
+	line-height @height
+	vertical-align text-top
+	margin-left 6px
+	width @height
+
+	&:first-child
+		margin-left 0
+
+	&:hover
+		transform scale(1.2)
+
+
+	&.new-user
+		background url('/img/new-user.png') no-repeat center center
+
+	&.user
+		background url('/img/user.png') no-repeat center center
+
+	&.help
+		background url('/img/help.png') no-repeat center center

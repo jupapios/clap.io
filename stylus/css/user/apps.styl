@@ -3,9 +3,12 @@
 		background-color white
 		box-shadow 0 1px 10px rgba(0, 0, 0, 0.25)
 		box-sizing border-box
-		padding 5px 20px
+		padding 5px 20px 0px
 		position fixed
 		width 100%
+
+		div
+			display inline-block
 
 		.btn-logout
 			background url('/img/logout.png') no-repeat
@@ -20,15 +23,6 @@
 		padding 20px
 		padding-top 50px
 
-		.btn-newapp
-			background black url('/img/add.png') no-repeat center center
-			cursor pointer
-			height 20px
-			transition all 0.7s linear
-			width @height
-
-			&:hover
-				transform rotate(-180deg)
 
 
 		.btn
@@ -82,6 +76,26 @@
 
 		.content
 			width 72%
+
+	.btn-newapp
+		background black url('/img/add.png') no-repeat center center
+		cursor pointer
+		height 20px
+		transition all 0.7s linear
+		width @height
+
+		&:hover
+				transform rotate(-180deg)
+
+	.btn-settings
+		background url('/img/settings.png') no-repeat center center
+		cursor pointer
+		height 20px
+		transition all 0.7s linear
+		width @height
+
+		&:hover
+				transform rotate(-180deg)				
 
 @media only screen and (max-width: 720px)
 	.user.profile

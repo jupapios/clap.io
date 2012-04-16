@@ -34,6 +34,12 @@ update_db = (req, res) ->
 				#console.log req.session.user
 				res.redirect("back")
 
+exports.settings = (req, res) ->
+	if req.session.user
+		res.json({msg: 'TODO'})
+	else
+		res.redirect "/user/"			
+
 exports.index = (req, res) ->
 	if req.session.user
 		res.redirect "/user/apps/"
@@ -84,19 +90,22 @@ exports.apps = (req, res) ->
 
 
 exports.login = (req, res) ->
-	authenticate req.body.username, req.body.password, (err, user) ->
-		if user
-			req.session.regenerate ->
-				req.session.user = user
-				res.render "user/apps",
-					layout: false
+	if req.body.username and req.body.password
+		authenticate req.body.username, req.body.password, (err, user) ->
+			if user
+				req.session.regenerate ->
+					req.session.user = user
+					res.render "user/apps",
+						layout: false
+						title: "clap.io - User"
+						data: req.session.user
+			else
+				res.render "user",
 					title: "clap.io - User"
-					data: req.session.user
-		else
-			res.render "user",
-				title: "clap.io - User"
-				layout: false
-				msg: true
+					layout: false
+					msg: true
+	else
+		res.json({err: 'bad request'})
 
 exports.logout = (req, res) ->
 	req.session.destroy ->

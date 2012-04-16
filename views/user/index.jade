@@ -1,4 +1,4 @@
-.user
+.user(data-app="Login")
 	header
 	div(role="main")
 		.modal-container
@@ -7,7 +7,7 @@
 					h3 Clap Admin
 					if msg
 						p error :(
-					form#login(method="post")
+					form(action="/user", method="post")
 						div
 							input(type="text", name="username", placeholder="Username")
 						div
