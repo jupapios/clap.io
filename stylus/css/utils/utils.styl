@@ -5,7 +5,8 @@
 	float left
 
 .ico
-	cursor pointer
+	background-repeat no-repeat
+	background-position center center
 	display inline-block
 	height 20px
 	transition all .5s linear
@@ -17,15 +18,45 @@
 	&:first-child
 		margin-left 0
 
-	&:hover
-		transform scale(1.2)
+	/*&:hover
+		transform scale(1.2)*/
 
 
 	&.new-user
-		background url('/img/new-user.png') no-repeat center center
+		background-image url('/img/new-user.png')
 
 	&.user
-		background url('/img/user.png') no-repeat center center
+		background-image url('/img/user.png')
 
 	&.help
-		background url('/img/help.png') no-repeat center center
+		background-image url('/img/help.png')
+
+	&.lock
+		background-image url('/img/lock.png')
+
+	&.leaf
+		background-image url('/img/leaf.png')
+
+	&.upload-cloud
+		background-image url('/img/upload-cloud.png')
+
+	&.list
+		background-image url('/img/list.png')
+
+	&.image-list
+		background-image url('/img/image-list.png')
+
+	&.settings
+		background-image url('/img/settings.png')
+
+	&.home
+		background-image url('/img/home.png')
+
+	&.logout
+		background-image url('/img/logout.png')
+
+	&.contact-card
+		background-image url('/img/contact-card.png')
+
+	&.link
+		background-image url('/img/link.png')			

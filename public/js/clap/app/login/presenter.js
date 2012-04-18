@@ -4,7 +4,7 @@
  *	author: Juan Pablo Pinilla
  */
 
-define('app/Login/presenter', ['util/Base', 'app/Login/view', 'app/Login/model'], function (widgetBase, View, Model) {
+define('app/login/presenter', ['util/Base', 'app/login/view', 'app/login/model'], function (widgetBase, View, Model) {
 
 	return new Class({
 

@@ -3,14 +3,12 @@
  * 	date: 15/03/2012
  *	author: Juan Pablo Pinilla
  */
-define('app/Login/model', ['util/Xhr'],function (Xhr) {
+define('app/login/model', function () {
 	return new Class({
 
 		valid: false,
 
 		model: {},
-
-		xhr: new Xhr(),
 
 		presenter: null,
 

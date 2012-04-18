@@ -55,8 +55,12 @@ app.get "/", routes.home.index
 #app.get "/user/apps/:id", routes.user.apps
 #app.post "/user/apps/", routes.user.modify_app
 #app.get "/user/apps/", routes.user.apps
-app.get "/user", routes.user.index
-app.post "/user", routes.user.login
+app.get "/register", routes.user.register
+app.post "/register", routes.user.new_user
+app.get "/login", routes.user.index
+app.post "/login", routes.user.login
+app.get "/apps", routes.user.apps
+app.get "/apps/:id", routes.user.apps
 app.all "/logout", routes.user.logout
 
 app.listen 3000, ->

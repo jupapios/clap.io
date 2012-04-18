@@ -38,14 +38,22 @@ exports.settings = (req, res) ->
 	if req.session.user
 		res.json({msg: 'TODO'})
 	else
-		res.redirect "/user/"			
+		res.redirect "/login"			
 
 exports.index = (req, res) ->
 	if req.session.user
-		res.redirect "/user/apps"
+		res.redirect "/apps"
 	else
 		res.render "user",
 			title: "clap.io - User"
+			msg: false
+
+exports.register = (req, res) ->
+	if req.session.user
+		res.redirect "/apps"
+	else
+		res.render "user/register",
+			title: "clap.io - Register"
 			msg: false
 
 exports.login = (req, res) ->
@@ -54,9 +62,7 @@ exports.login = (req, res) ->
 			if user
 				req.session.regenerate ->
 					req.session.user = user
-					res.render "user/apps",
-						title: "clap.io - User"
-						data: req.session.user
+					res.redirect "/apps"
 			else
 				res.render "user",
 					title: "clap.io - User"
@@ -85,26 +91,20 @@ exports.modify_app = (req, res) ->
 
 exports.apps = (req, res) ->
 	if req.session.user
-		if req.xhr
+		if req.params.id
 			res.render "user/apps",
-				layout: false
 				title: "clap.io - User"
 				data: req.session.user
+				locals:
+					id: req.params.id
 		else
-			if req.params.id
-				res.render "user/apps",
-					title: "clap.io - User"
-					data: req.session.user
-					locals:
-						id: req.params.id
-			else
-				res.render "user/apps",
-					title: "clap.io - User"
-					data: req.session.user
+			res.render "user/apps",
+				title: "clap.io - User"
+				data: req.session.user
 	else
-		res.redirect "/user/"
+		res.redirect "/user"
 
 
 exports.logout = (req, res) ->
 	req.session.destroy ->
-		res.redirect "/user/"
+		res.redirect "/login"

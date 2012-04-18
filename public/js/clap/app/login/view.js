@@ -4,7 +4,7 @@
  *	author: Juan Pablo Pinilla
  */
 
-define('app/Login/view', function () {
+define('app/login/view', function () {
 
 	return new Class({
 

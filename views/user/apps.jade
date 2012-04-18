@@ -1,82 +1,9 @@
 .user.profile
 	header
-		div.btn-newapp(onclick="listen.newapp()") 
-		div.btn-settings(href="/user/settings")
-		a.right.btn-logout(href="/logout/")
-		.ico a
+		a.ico.upload-cloud(title="new app")
+		a.ico.list(title="list")
+		a.ico.image-list(title="list")
+		a.ico.settings(title="settings")
+		//a.ico.help.right(title="help") 
+		a.ico.logout.right(href="/logout/")
 		.clearfix
-	div(role="main")
-		.box.menu
-			h3 your apps
-				.btn-newapp.right(onclick="listen.newapp()")
-			for app, i in data.apps
-				div.clearfix(data-app=i, onclick="listen.appclick(this)")
-					span= app.name
-					if app.state == true
-						span.btn.green running
-					else
-						span.btn.red stopped
-		.apps
-			if locals.id == "new"
-				.box.block.content.new_app
-					.modal
-						h3 Create new application
-						form(method="post", action="/user/apps/new")
-							div
-								input(type="text", name="appname", placeholder="app name")
-							div
-								input(type="text", name="appdomain", placeholder="app domain")
-							div
-								input(type="submit", value="create").button
-			else
-				.box.content.new_app
-					.modal
-						h3 Create application
-						form(method="post", action="/user/apps/new")
-							div
-								input(type="text", name="appname", placeholder="app name")
-							div
-								input(type="text", name="appdomain", placeholder="app domain")
-							div
-								input(type="submit", value="create").button
-			for app, i in data.apps
-				if locals.id
-					id = locals.id
-				else
-					id = 0
-				if id == i
-					div(class="block box content app-"+i)
-						.modal
-							h3= app.name
-							form(method="post")
-								div
-									input(type="text", name="appdomain", placeholder="app domain", value=app.domain)
-								div
-									input(type="submit", value="save").button
-								if app.state == true
-									div
-										input(type="submit", value="stop app").button
-								else
-									div
-										input(type="submit", value="start app").button
-								div
-									input(type="submit", value="delete app").button
-				else
-					div(class="box content app-"+i)
-						.modal
-							h3= app.name
-							form(method="post")
-								div
-									input(type="text", name="appdomain", placeholder="app domain", value=app.domain)
-								div
-									input(type="submit", value="save").button
-								if app.state == true
-									div
-										input(type="submit", value="stop app").button
-								else
-									div
-										input(type="submit", value="start app").button
-								div
-									input(type="submit", value="delete app").button
-
-	footer
