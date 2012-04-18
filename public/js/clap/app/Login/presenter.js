@@ -27,8 +27,8 @@ define('app/Login/presenter', ['util/Base', 'app/Login/view', 'app/Login/model']
 			this.view.update(this.model.get());
 		},
 
-		send: function (url) {
-			return this.model.send(url);
+		send: function () {
+			return this.model.send();
 		}
 
 	});

@@ -51,10 +51,9 @@ define('app/Login/model', ['util/Xhr'],function (Xhr) {
 
 		},
 
-		send: function (url) {
+		send: function () {
 			this.presenter.change();
-			if (this.valid)
-				return this.xhr.send(url, 'username='+this.model.user_input.value+'&password='+this.model.pass_input.value); 
+			if (this.valid) return true;
 			return false;
 
 		}

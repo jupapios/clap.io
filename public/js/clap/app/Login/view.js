@@ -75,9 +75,9 @@ define('app/Login/view', function () {
 			}.bind(this));
 
 			this.options.dom.form.addEvent('submit', function (event) {
-				event.stop();
-				this._response(this.presenter.send(this.options.dom.form.get('action')));
-				return false;
+				//event.stop();
+				//this._response();
+				return this.presenter.send();
 			}.bind(this));
 
 		},
