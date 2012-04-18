@@ -44,17 +44,54 @@ exports.index = (req, res) ->
 	if req.session.user
 		res.redirect "/apps"
 	else
-		res.render "user",
-			title: "clap.io - User"
+		res.render "login",
+			title: "clap.io - user"
 			msg: false
+
+exports.coupon = (req, res) ->
+	if req.session.user
+		res.redirect "/apps"
+	else
+		res.render "coupon",
+			title: "clap.io - coupon"
+			msg: false
+
+exports.get_coupon = (req, res) ->
+	if req.body.email
+		db.open (err, db) ->
+			db.createCollection 'coupons', (err, collection) ->
+				coupon = crypto.createHash('sha1').update((new Date()).valueOf().toString() + Math.random().toString()).digest('hex');
+				collection.insert {email: req.body.email, coupon: coupon, date: new Date()}, (err, doc) ->
+					res.render "coupon",
+						title: "clap.io - coupon"
+						msg: true
+
+	else
+		res.json({err: 'bad request'})
 
 exports.register = (req, res) ->
 	if req.session.user
 		res.redirect "/apps"
 	else
-		res.render "user/register",
-			title: "clap.io - Register"
+		res.render "register",
+			title: "clap.io - register"
 			msg: false
+
+exports.new_user = (req, res) ->
+	if req.body.username and req.body.password and req.body.email and req.body.coupon
+		db.open (err, db) ->
+			db.createCollection 'coupons', (err, collection) ->
+				collection.findOne {'email':req.body.email}, (err, item) ->
+					console.log item
+					if item.coupon == req.body.coupon
+						db.createCollection 'users', (err, collection) ->
+							collection.findAndModify {user: req.body.username},  [], {$set:{email:req.body.email, salt:req.body.coupon, pass:hash(req.body.password, req.body.coupon)}}, {new:true, upsert:true}, (err, doc) ->
+								console.log doc
+					else
+						res.json({err: 'invalid coupon'})
+
+	else
+		res.json({err: 'bad request'})
 
 exports.login = (req, res) ->
 	if req.body.username and req.body.password
@@ -64,8 +101,8 @@ exports.login = (req, res) ->
 					req.session.user = user
 					res.redirect "/apps"
 			else
-				res.render "user",
-					title: "clap.io - User"
+				res.render "login",
+					title: "clap.io - user"
 					msg: true
 	else
 		res.json({err: 'bad request'})
@@ -93,13 +130,13 @@ exports.apps = (req, res) ->
 	if req.session.user
 		if req.params.id
 			res.render "user/apps",
-				title: "clap.io - User"
+				title: "clap.io - user"
 				data: req.session.user
 				locals:
 					id: req.params.id
 		else
 			res.render "user/apps",
-				title: "clap.io - User"
+				title: "clap.io - user"
 				data: req.session.user
 	else
 		res.redirect "/user"

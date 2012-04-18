@@ -1,5 +1,6 @@
 .user(data-app="login")
 	header
+		a.ico.home(href="/")
 	div(role="main")
 		.modal-container
 			.modal-backdrop
@@ -7,7 +8,7 @@
 					h3
 						span.ico.leaf
 						|Clap Admin
-					a.ico.user(data-widget="register", href="/register")
+					a.ico.user(data-widget="register", href="/login")
 					if msg
 						p error :(
 					form(method="post")
@@ -15,8 +16,14 @@
 							span.ico.user
 							input(type="text", name="username", placeholder="username")
 						div
+							span.ico.contact-card
+							input(type="email", name="email", placeholder="email")						
+						div
 							span.ico.lock
 							input(type="password", name="password", placeholder="password")
 						div
-							input(type="submit", value="login").button
+							span.ico.link
+							input(type="text", name="coupon", placeholder="coupon")							
+						div
+							input(type="submit", value="create user").button
 	footer

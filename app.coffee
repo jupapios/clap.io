@@ -59,6 +59,8 @@ app.get "/register", routes.user.register
 app.post "/register", routes.user.new_user
 app.get "/login", routes.user.index
 app.post "/login", routes.user.login
+app.get "/coupon", routes.user.coupon
+app.post "/coupon", routes.user.get_coupon
 app.get "/apps", routes.user.apps
 app.get "/apps/:id", routes.user.apps
 app.all "/logout", routes.user.logout

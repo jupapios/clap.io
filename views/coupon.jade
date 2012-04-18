@@ -1,0 +1,19 @@
+.user(data-app="login")
+	header
+		a.ico.home(href="/")
+	div(role="main")
+		.modal-container
+			.modal-backdrop
+				.modal
+					h3
+						span.ico.leaf
+						|Clap Coupon
+					if msg
+						p you're listed
+					form(method="post")
+						div	
+							span.ico.contact-card
+							input(type="email", name="email", placeholder="email")
+						div
+							input(type="submit", value="get one").button
+	footer
