@@ -54,7 +54,7 @@ define('app/form/view', function () {
 
 			this.options.dom.form = src
 
-			// returns all input elements execpt the submit button
+			// returns all input elements except the submit button
 			var inputs = src.getElements('input').filter(function (item, index) {
 				return item.get('type') !== 'submit'
 			})
