@@ -1,8 +1,13 @@
 .home
 	header
 	div(role="main")
+		cl = ''
+		ev = ''
+		if(logged)
+			cl = 'disabled'
+			ev = 'return false'
 		.welcome
 			a(href="/login").ico.user
-			a(href="/register").ico.new-user
-			a(href="/coupon").ico.coupon
+			a(href="/register", class=cl, onclick=ev).ico.new-user
+			a(href="/coupon", class=cl, onclick=ev).ico.coupon
 	footer
