@@ -1,4 +1,4 @@
-define('widget/register', ['util/Base'], function (widgetBase) {
+define('widget/example', ['util/Base'], function (widgetBase) {
 
 	return new Class({
 		
@@ -10,9 +10,7 @@ define('widget/register', ['util/Base'], function (widgetBase) {
 		},
 
 		setup: function () {
-			this.src.addEvents({
-
-			})
+			console.log('example')
 		}
 	})
 })
