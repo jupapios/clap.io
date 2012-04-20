@@ -15,6 +15,8 @@ define('app/form/view', function () {
 			dom: {}
 		},
 
+		src: null,
+
 		presenter: null,
 
 		initialize: function (presenter) {
@@ -30,9 +32,12 @@ define('app/form/view', function () {
 
 			for(var key in this.options.dom) {
 				var item = this.options.dom[key]
-				arr[key] = {}
-				arr[key].type = item.get('type')
-				arr[key].value = item.get('value')
+				if (item.get('required')) {
+					arr[key] = {}
+					arr[key].type = item.get('type')
+					arr[key].value = item.get('value')
+					//arr[key].required = item.get('required') ? true: false
+				}
 			}
 
 			console.log(arr)
@@ -50,12 +55,10 @@ define('app/form/view', function () {
 
 		_dom: function () {
 
-			var src = this.presenter.src
-
-			this.options.dom.form = src
+			this.src = this.presenter.src
 
 			// returns all input elements except the submit button
-			var inputs = src.getElements('input').filter(function (item, index) {
+			var inputs = this.src.getElements('input').filter(function (item, index) {
 				return item.get('type') !== 'submit'
 			})
 
@@ -67,8 +70,7 @@ define('app/form/view', function () {
 
 		_events: function () {
 
-			this.options.dom.form.getElements('[type="submit"]').addEvent('click', function (event) {
-				console.log('hola')
+			this.src.getElements('[type="submit"]').addEvent('click', function (event) {
 				return this.presenter.send()
 			}.bind(this))
 
