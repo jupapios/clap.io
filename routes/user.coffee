@@ -117,11 +117,14 @@ exports.login = (req, res) ->
 
 exports.new_app = (req, res) ->
 	if req.session.user
-		req.session.user.apps.push
-			name: req.body.appname
-			state: true
-			domain: req.body.appdomain
-		update_db(req, res)
+		#req.session.user.apps.push
+		#	name: req.body.appname
+		#	state: true
+		#	domain: req.body.appdomain
+		#update_db(req, res)
+		res.render "user/new",
+			title: "clap.io - new app"
+
 
 	else
 		res.json({msg: 'security error'})		
@@ -137,13 +140,13 @@ exports.modify_app = (req, res) ->
 exports.apps = (req, res) ->
 	if req.session.user
 		if req.params.id
-			res.render "user/apps",
+			res.render "user/base",
 				title: "clap.io - user"
 				data: req.session.user
 				locals:
 					id: req.params.id
 		else
-			res.render "user/apps",
+			res.render "user/base",
 				title: "clap.io - user"
 				data: req.session.user
 	else

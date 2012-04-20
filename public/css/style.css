@@ -112,7 +112,11 @@ td{vertical-align:top}
 .user.profile div[role="main"] .btn:hover{opacity:.8;filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80)}
 .user.profile div[role="main"] .btn.green{background-color:#58aa00}
 .user.profile div[role="main"] .btn.red{background-color:#e50000}
-.user.profile div[role="main"] .box{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-box-shadow:0 1px 10px rgba(0,0,0,0.25);-moz-box-shadow:0 1px 10px rgba(0,0,0,0.25);box-shadow:0 1px 10px rgba(0,0,0,0.25);-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;float:left;padding:10px;margin-bottom:20px;text-align:center}
+.user.profile div[role="main"] .box{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-box-shadow:0 1px 10px rgba(0,0,0,0.25);-moz-box-shadow:0 1px 10px rgba(0,0,0,0.25);box-shadow:0 1px 10px rgba(0,0,0,0.25);-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;float:left;padding:10px;margin-bottom:20px;text-align:center;}
+.user.profile div[role="main"] .box h3{margin-top:.8em;margin-bottom:1.2em}
+.user.profile div[role="main"] .box form > div{margin-top:5px;}
+.user.profile div[role="main"] .box form > div:first-child{margin-top:0}
+.user.profile div[role="main"] .box.mini{height:70px;overflow:hidden}
 .user.profile div[role="main"] .apps > div{display:none}
 .user.profile div[role="main"] .block{display:block !important}
 .user.profile div[role="main"] .menu{margin-right:20px;width:25%;}
