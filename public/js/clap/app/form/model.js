@@ -27,11 +27,19 @@ define('app/form/model', function () {
 
 				var el = model[key]
 
-				if(!el.required && el.value != '')el.required = true	
+				if(!el.required && el.value != '') el.required = true	
 				else el.valid = true
 
 				if(el.required) {
 					// valide using el.type
+					switch(el.type) {
+						case 'text':
+							break
+						case 'password':
+							break
+						case 'email':
+							break
+					}
 					if (el.value == '') {
 						el.valid = false
 						this.valid = false
