@@ -24,14 +24,22 @@ define('app/form/model', function () {
 			var model = this.model
 
 			for(var key in model) {
+
 				var el = model[key]
-				if (el.value == '') {
-					el.valid = false
-					this.valid = false
-					flag =false
-				} else {
-					el.valid = true
-					if (flag) this.valid = true
+
+				if(!el.required && el.value != '')el.required = true	
+				else el.valid = true
+
+				if(el.required) {
+					// valide using el.type
+					if (el.value == '') {
+						el.valid = false
+						this.valid = false
+						flag =false
+					} else {
+						el.valid = true
+						if (flag) this.valid = true
+					}
 				}
 			}
 

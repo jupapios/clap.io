@@ -32,12 +32,10 @@ define('app/form/view', function () {
 
 			for(var key in this.options.dom) {
 				var item = this.options.dom[key]
-				if (item.get('required')) {
-					arr[key] = {}
-					arr[key].type = item.get('type')
-					arr[key].value = item.get('value')
-					//arr[key].required = item.get('required') ? true: false
-				}
+				arr[key] = {}
+				arr[key].type = item.get('type')
+				arr[key].value = item.get('value')
+				arr[key].required = item.get('required') ? true: false
 			}
 
 			console.log(arr)
