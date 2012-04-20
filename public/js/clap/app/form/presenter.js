@@ -25,7 +25,7 @@ define('app/form/presenter', ['util/Base', 'app/form/view', 'app/form/model'], f
 		change: function () {
 			this.model.update(this.view.get())
 			this.view.update(this.model.get());
-		}
+		},
 
 		send: function () {
 			this.change()
