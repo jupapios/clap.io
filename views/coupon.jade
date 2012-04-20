@@ -1,4 +1,4 @@
-.user(data-app="form")
+.user
 	header
 		a.ico.home(href="/")
 	div(role="main")
@@ -10,10 +10,10 @@
 						|Clap Coupon
 					if msg
 						p you're listed
-					form(method="post")
+					form(method="post", data-app="form")
 						div	
 							span.ico.contact-card
-							input(type="email", name="email", placeholder="email")
+							input(type="email", name="email", placeholder="email", required)
 						div
 							input(type="submit", value="get one").button
 	footer

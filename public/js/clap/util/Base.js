@@ -1,22 +1,24 @@
 define('util/Base', ['require', '../../lib/cfg', 'util/Element'], function (require) {
-	var cfg = require('lib/cfg');
+
+	var cfg = require('lib/cfg')
 
 	return new Class({
+
 		Implements: [Options],
 
 		src: null,
 		cfg: null,
 
 		initialize: function (src, options) {
-			this.init();
+			this.init()
 
-			this.src = $(src);
-			this.src.store('widget', this);
-			this.setOptions(options);
-			this._fetchOptions();
-			this.postMixinProperties();
-			this.render();
-			this.postCreate();
+			this.src = $(src)
+			this.src.store('widget', this)
+			this.setOptions(options)
+			this._fetchOptions()
+			this.postMixinProperties()
+			this.render()
+			this.postCreate()
 		},
 
 		init: function () {},
@@ -25,8 +27,8 @@ define('util/Base', ['require', '../../lib/cfg', 'util/Element'], function (requ
 		render: function () {},
 
 		_fetchOptions: function () {
-			this.cfg = new cfg(this.src);
-			Object.merge(this.options, this.cfg);
+			this.cfg = new cfg(this.src)
+			Object.merge(this.options, this.cfg)
 		}
-	});
-});
+	})
+})

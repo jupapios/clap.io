@@ -1,10 +1,10 @@
 /**
  *	Login Presenter
- * 	date: 15/03/2012
+ * 	date: 15/04/2012
  *	author: Juan Pablo Pinilla
  */
 
-define('app/login/presenter', ['util/Base', 'app/login/view', 'app/login/model'], function (widgetBase, View, Model) {
+define('app/form/presenter', ['util/Base', 'app/form/view', 'app/form/model'], function (widgetBase, View, Model) {
 
 	return new Class({
 
@@ -28,6 +28,7 @@ define('app/login/presenter', ['util/Base', 'app/login/view', 'app/login/model']
 		},
 
 		send: function () {
+			this.change()
 			return this.model.send();
 		}
 

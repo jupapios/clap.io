@@ -1,9 +1,9 @@
 /**
  *	Login Presenter
- * 	date: 15/03/2012
+ * 	date: 15/04/2012
  *	author: Juan Pablo Pinilla
  */
-define('app/login/model', function () {
+define('app/form/model', function () {
 	return new Class({
 
 		valid: false,
@@ -50,7 +50,6 @@ define('app/login/model', function () {
 		},
 
 		send: function () {
-			this.presenter.change();
 			if (this.valid) return true;
 			return false;
 

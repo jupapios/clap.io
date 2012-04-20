@@ -1,4 +1,4 @@
-.user(data-app="form")
+.user
 	header
 		a.ico.home(href="/")
 	div(role="main")
@@ -11,19 +11,19 @@
 					a.ico.user(href="/login")
 					if msg
 						p error :(
-					form(method="post")
+					form(method="post", data-app="form")
 						div	
 							span.ico.user
-							input(type="text", name="username", placeholder="username")
+							input(type="text", name="username", placeholder="username", required)
 						div
 							span.ico.contact-card
-							input(type="email", name="email", placeholder="email")						
+							input(type="email", name="email", placeholder="email", required)		
 						div
 							span.ico.lock
-							input(type="password", name="password", placeholder="password")
+							input(type="password", name="password", placeholder="password", required)
 						div
 							span.ico.link
-							input(type="text", name="coupon", placeholder="coupon")							
+							input(type="text", name="coupon", placeholder="coupon", required)		
 						div
 							input(type="submit", value="create user").button
 	footer
