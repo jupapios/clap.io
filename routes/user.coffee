@@ -86,7 +86,15 @@ exports.new_user = (req, res) ->
 					if item.coupon == req.body.coupon
 						db.createCollection 'users', (err, collection) ->
 							collection.findAndModify {user: req.body.username},  [], {$set:{email:req.body.email, salt:req.body.coupon, pass:hash(req.body.password, req.body.coupon)}}, {new:true, upsert:true}, (err, doc) ->
-								console.log doc
+								authenticate req.body.username, req.body.password, (err, user) ->
+									if user
+										req.session.regenerate ->
+											req.session.user = user
+											res.redirect "/apps"
+									else
+										res.render "login",
+											title: "clap.io - user"
+											msg: true
 					else
 						res.json({err: 'invalid coupon'})
 
