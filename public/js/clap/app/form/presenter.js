@@ -14,24 +14,24 @@ define('app/form/presenter', ['util/Base', 'app/form/view', 'app/form/model'], f
 		model: null,
 
 		postMixinProperties: function () {
-			this.setup();
+			this.setup()
 		},
 
 		setup: function () {
-			this.view = new View(this);
-			this.model = new Model(this);
+			this.view = new View(this)
+			this.model = new Model(this)
 		},
 
 		change: function () {
-			this.model.update(this.view.get());
+			this.model.update(this.view.get())
 			this.view.update(this.model.get());
-		},
+		}
 
 		send: function () {
 			this.change()
-			return this.model.send();
+			return this.model.send()
 		}
 
-	});
+	})
 
-});
+})

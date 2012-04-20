@@ -1,6 +1,6 @@
-define('util/Base', ['require', '../../lib/cfg', 'util/Element'], function (require) {
+define('util/Base', ['require', 'util/Element'], function (require) {
 
-	var cfg = require('lib/cfg')
+	//var cfg = require('lib/cfg')
 
 	return new Class({
 
@@ -27,8 +27,8 @@ define('util/Base', ['require', '../../lib/cfg', 'util/Element'], function (requ
 		render: function () {},
 
 		_fetchOptions: function () {
-			this.cfg = new cfg(this.src)
-			Object.merge(this.options, this.cfg)
+			/*this.cfg = new cfg(this.src)
+			Object.merge(this.options, this.cfg)*/
 		}
 	})
 })

@@ -67,13 +67,10 @@ define('app/form/view', function () {
 
 		_events: function () {
 
-			console.log(this.options.dom.form)
-			this.options.dom.form.addEvent('submit', function (event) {
-				event.stop()
+			this.options.dom.form.getElements('[type="submit"]').addEvent('click', function (event) {
 				console.log('hola')
 				return this.presenter.send()
 			}.bind(this))
-			console.log(2)
 
 			for(var key in this.options.dom) {
 				var item = this.options.dom[key]
