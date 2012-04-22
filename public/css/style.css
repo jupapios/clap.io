@@ -126,8 +126,7 @@ td{vertical-align:top}
 .user.profile div[role="main"] .menu > div span:first-child{float:left}
 .user.profile div[role="main"] .menu > div span:last-child{float:right}
 .user.profile div[role="main"] .content{width:72%}
-@media only screen and (max-width: 640px){.user.profile div[role="main"] .box{margin-left:0;width:100%;}
-.user.profile div[role="main"] .box:last-child{margin-bottom:20px}
+@media only screen and (max-width: 640px){.user.profile div[role="main"] .box{margin-left:0;width:100%}
 }#loader{background:#fff url("/img/loading.gif") no-repeat center center;height:100%;left:0;position:absolute;top:0;z-index:9;width:100%}
 .ir{display:block;border:0;text-indent:-999em;overflow:hidden;background-color:transparent;background-repeat:no-repeat;text-align:left;direction:ltr;*line-height:0;}
 .ir br{display:none}

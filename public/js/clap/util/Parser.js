@@ -24,7 +24,6 @@ define('util/Parser', function () {
 
 
 				require([path], function (App) {
-					console.log(path)
 					app = new App(el)
 				})
 			})
