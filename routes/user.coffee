@@ -56,6 +56,17 @@ exports.coupon = (req, res) ->
 			title: "clap.io - coupon"
 			msg: false
 
+exports.create_app = (req, res) ->
+	if req.session.user and req.body.app_name and req.body.git and req.body.domain
+			user = req.session.user.user
+			app_name = user+"_"+req.body.app_name
+			git = req.body.git
+			domain = req.body.domain+".clap.io"
+
+			console.log user, app_name, git, domain
+	else
+		res.json({msg: 'security error'})
+
 exports.get_coupon = (req, res) ->
 	if req.body.email
 		db.open (err, db) ->
