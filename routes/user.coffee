@@ -71,7 +71,7 @@ exports.create_app = (req, res) ->
 				port: 9002
 
 			# A basic package.json for a node.js application on Haibu
-			app =
+			app_json =
 				user: user
 				name: app_name
 				domain: domain
@@ -86,13 +86,15 @@ exports.create_app = (req, res) ->
 					node: "0.6.14"
 
 			# Attempt to start up a new application
-			client.start app, (err, result) ->
+			client.start app_json, (err, result) ->
 				if err
 					res.json({err: err})
 				else
+					# update proxy with domain and result.drone.port
+					console.log user, app_name, git, domain
+					console.log result.drone.port
 					res.json({msg: result})
 
-			console.log user, app_name, git, domain
 	else
 		res.json({msg: 'security error'})
 
