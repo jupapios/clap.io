@@ -112,10 +112,12 @@ td{vertical-align:top}
 .user.profile div[role="main"] .btn:hover{opacity:.8;filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=80)}
 .user.profile div[role="main"] .btn.green{background-color:#58aa00}
 .user.profile div[role="main"] .btn.red{background-color:#e50000}
-.user.profile div[role="main"] .box{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-box-shadow:0 1px 10px rgba(0,0,0,0.25);-moz-box-shadow:0 1px 10px rgba(0,0,0,0.25);box-shadow:0 1px 10px rgba(0,0,0,0.25);-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;float:left;padding:10px;margin-bottom:20px;text-align:center;}
+.user.profile div[role="main"] .list-apps li{text-align:left}
+.user.profile div[role="main"] .box{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-box-shadow:0 1px 10px rgba(0,0,0,0.25);-moz-box-shadow:0 1px 10px rgba(0,0,0,0.25);box-shadow:0 1px 10px rgba(0,0,0,0.25);-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;float:left;padding:10px;margin-bottom:20px;text-align:center;margin-left:20px;}
 .user.profile div[role="main"] .box h3{margin-top:.8em;margin-bottom:1.2em}
 .user.profile div[role="main"] .box form > div{margin-top:5px;}
 .user.profile div[role="main"] .box form > div:first-child{margin-top:0}
+.user.profile div[role="main"] .box:first-child{margin-left:0}
 .user.profile div[role="main"] .box.mini{height:70px;overflow:hidden}
 .user.profile div[role="main"] .apps > div{display:none}
 .user.profile div[role="main"] .block{display:block !important}
@@ -124,8 +126,8 @@ td{vertical-align:top}
 .user.profile div[role="main"] .menu > div span:first-child{float:left}
 .user.profile div[role="main"] .menu > div span:last-child{float:right}
 .user.profile div[role="main"] .content{width:72%}
-@media only screen and (max-width: 720px){.user.profile div[role="main"] .menu{width:100%}
-.user.profile div[role="main"] .content{width:100%}
+@media only screen and (max-width: 640px){.user.profile div[role="main"] .box{margin-left:0;width:100%;}
+.user.profile div[role="main"] .box:last-child{margin-bottom:20px}
 }#loader{background:#fff url("/img/loading.gif") no-repeat center center;height:100%;left:0;position:absolute;top:0;z-index:9;width:100%}
 .ir{display:block;border:0;text-indent:-999em;overflow:hidden;background-color:transparent;background-repeat:no-repeat;text-align:left;direction:ltr;*line-height:0;}
 .ir br{display:none}

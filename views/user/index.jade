@@ -1,5 +1,10 @@
 extends base
 block content
+	.box.list-apps
+		h3 your apps
+		ul
+			li hola
+			li hola
 	.box
 		h3 create new app
 		form(method="post", data-app="form")
@@ -8,6 +13,8 @@ block content
 			div
 				input(type="text", name="git", placeholder="git", required)
 			div
-				input(type="text", name="domain", placeholder="domain", required)				
+				input(type="text", name="domain", placeholder="domain", required, style="width:80%; float:left;")
+				span(style="vertical-align: middle;") .clap.io
+			div.clearfix
 			div
 				input(type="submit", value="create").button
