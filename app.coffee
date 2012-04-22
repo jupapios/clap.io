@@ -62,8 +62,7 @@ app.post "/login", routes.user.login
 app.get "/coupon", routes.user.coupon
 app.post "/coupon", routes.user.get_coupon
 app.get "/apps", routes.user.apps
-app.get "/apps/new", routes.user.new_app
-app.post "/apps/new", routes.user.create_app
+app.post "/apps", routes.user.create_app
 app.get "/apps/:id", routes.user.apps
 app.all "/logout", routes.user.logout
 

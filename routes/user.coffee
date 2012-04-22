@@ -1,3 +1,4 @@
+haibu = require("haibu")
 crypto = require("crypto")
 Db = require('mongodb').Db
 Server = require('mongodb').Server
@@ -38,7 +39,7 @@ exports.settings = (req, res) ->
 	if req.session.user
 		res.json({msg: 'TODO'})
 	else
-		res.redirect "/login"			
+		res.redirect "/login"
 
 exports.index = (req, res) ->
 	if req.session.user
@@ -57,11 +58,39 @@ exports.coupon = (req, res) ->
 			msg: false
 
 exports.create_app = (req, res) ->
-	if req.session.user and req.body.app_name and req.body.git and req.body.domain
+	if req.session.user and req.body.app_name and req.body.git and req.body.domain and req.body.start
 			user = req.session.user.user
 			app_name = user+"_"+req.body.app_name
 			git = req.body.git
 			domain = req.body.domain+".clap.io"
+			start = req.body.start
+
+			# Create a new client for communicating with the haibu server
+			client = new haibu.drone.Client
+				host: process.env.HOST || '127.0.0.1'
+				port: 9002
+
+			# A basic package.json for a node.js application on Haibu
+			app =
+				user: user
+				name: app_name
+				domain: domain
+				repository:
+					type: "git"
+					url: git
+
+				scripts:
+					start: start
+
+				engine:
+					node: "0.6.14"
+
+			# Attempt to start up a new application
+			client.start app, (err, result) ->
+				if err
+					res.json({err: err})
+				else
+					res.json({msg: result})
 
 			console.log user, app_name, git, domain
 	else
@@ -138,7 +167,7 @@ exports.new_app = (req, res) ->
 
 
 	else
-		res.json({msg: 'security error'})
+		res.json({err: 'security error'})
 
 exports.modify_app = (req, res) ->
 	if req.session.user
@@ -146,7 +175,7 @@ exports.modify_app = (req, res) ->
 		req.session.user.apps[id].domain = req.body.appdomain
 		update_db(req, res)
 	else
-		res.json({msg: 'security error'})
+		res.json({err: 'security error'})
 
 exports.apps = (req, res) ->
 	if req.session.user
