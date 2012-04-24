@@ -4,20 +4,28 @@ block content
 	.box.list-apps
 		h3 your apps
 		ul
-			li hola
-			li hola
+			li 
+				span.ico.leaf
+				| hola
+			li
+				span.ico.leaf
+				| hola
 	.box
 		a(name="new")
 		h3 create new app
 		form(method="post", data-app="form")
 			div	
+				span.ico.document
 				input(type="text", name="app_name", placeholder="app name", required)
 			div
+				span.ico.git
 				input(type="text", name="git", placeholder="git", required)
 			div
+				span.ico.play
 				input(type="text", name="start", placeholder="start script", required)				
-			div
-				input(type="text", name="domain", placeholder="domain", required, style="width:80%; float:left;")
+			div(style="text-align: left;")
+				span.ico.circles
+				input(type="text", name="domain", placeholder="domain", required, style="width:80%;")
 				span(style="vertical-align: middle;") .clap.io
 			div.clearfix
 			div
