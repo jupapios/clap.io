@@ -9,7 +9,7 @@ nib = require 'nib'
 # Proxy
 httpProxy = require '../proxy/lib/node-http-proxy'
 
-data = '{"router": {"clap.io": "localhost:3000","api.clap.io": "localhost:9002"}}'
+data = '{"router": {"clap.io": "localhost:3000","api.clap.io": "localhost:9002", "ssh.clap.io": "localhost:22"}}'
 
 port_proxy = 80
 config = JSON.parse data
