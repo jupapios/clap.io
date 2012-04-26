@@ -9,14 +9,14 @@ nib = require 'nib'
 # Proxy
 httpProxy = require '../proxy/lib/node-http-proxy'
 
-data = '{"router": {"node.clap.io": "localhost:9002","hello.clap.io": "localhost:8000"}}'
+data = '{"router": {"clap.io": "localhost:3000","api.clap.io": "localhost:9002"}}'
 
 port_proxy = 80
 config = JSON.parse data
 
-server = httpProxy.createServer config
+GLOBAL.server = httpProxy.createServer config
 
-server.listen port_proxy
+GLOBAL.server.listen port_proxy
 
 
 # clap app

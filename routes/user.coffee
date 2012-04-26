@@ -1,4 +1,4 @@
-haibu = require("haibu")
+haibu = require("../../haibu/lib/haibu")
 crypto = require("crypto")
 Db = require('mongodb').Db
 Server = require('mongodb').Server
@@ -91,8 +91,9 @@ exports.create_app = (req, res) ->
 					res.json({err: err})
 				else
 					# update proxy with domain and result.drone.port
-					console.log user, app_name, git, domain
-					console.log result.drone.port
+					#console.log user, app_name, git, domain
+					#console.log result.drone.port
+					GLOBAL.server.proxy.addHost(domain, 'localhost:'+result.drone.port)
 					res.json({msg: result})
 
 	else
