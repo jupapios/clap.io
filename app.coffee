@@ -6,6 +6,20 @@ express = require 'express'
 stylus = require 'stylus'
 nib = require 'nib'
 
+# Proxy
+httpProxy = require '../proxy/lib/node-http-proxy'
+
+data = '{"router": {"node.clap.io": "localhost:9002","hello.clap.io": "localhost:8000"}}'
+
+port_proxy = 80
+config = JSON.parse data
+
+server = httpProxy.createServer config
+
+server.listen port_proxy
+
+
+# clap app
 routes =
 	home: require "./routes/home"
 	user: require "./routes/user"
