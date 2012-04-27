@@ -6,25 +6,54 @@ express = require 'express'
 stylus = require 'stylus'
 nib = require 'nib'
 
+# Ports
+GLOBAL.port_proxy = 80
+GLOBAL.port_clap = 3000
+GLOBAL.port_haibu = 4000
+
 # Proxy
 httpProxy = require '../proxy/lib/node-http-proxy'
 
-data = '{"router": {"clap.io": "localhost:3000","api.clap.io": "localhost:9002", "ssh.clap.io": "localhost:22", "mongo.clap.io": "localhost:28017"}}'
+data =
+	"router":
+		"clap.io": "localhost:"+port_clap
+		"api.clap.io": "localhost:"+port_haibu
+		"ssh.clap.io": "localhost:22"
+		"mongo.clap.io": "localhost:28017"
 
-port_proxy = 80
-config = JSON.parse data
+config = data
 
 GLOBAL.server = httpProxy.createServer config
 
-GLOBAL.server.listen port_proxy
+server.listen port_proxy
 
+console.log 'proxy listening on port', port_proxy
+
+
+# haibu
+path = require 'path'
+util = require 'util'
+argv = require('optimist').argv
+haibu = require '../haibu/lib/haibu'
+
+env  = argv.env || 'development'
+
+haibu.utils.bin.getAddress argv.a, (err, address) ->
+	options =
+		env: env
+		port: port_haibu
+		host: address
+
+	haibu.drone.start options, ->
+		#haibu.utils.showWelcome('api-server', address, port)
+		console.log 'haibu listening on port', port_haibu
 
 # clap app
 routes =
 	home: require "./routes/home"
 	user: require "./routes/user"
 
-port = process.env.PORT || 3000
+port = process.env.PORT || port_clap
 app = module.exports = express.createServer()
 
 # Configuration
@@ -37,7 +66,7 @@ app.configure () ->
 	app.use express.cookieParser()
 	app.use express.session
 		secret: require('crypto').randomBytes 48, (ex, buf) ->
-					return buf.toString('hex')
+					return buf.toString 'hex'
 
 	# Stylus to CSS compilation
 	app.use stylus.middleware
@@ -81,4 +110,4 @@ app.get "/apps/:id", routes.user.apps
 app.all "/logout", routes.user.logout
 
 app.listen 3000, ->
-	console.log "clap listening on port %d in %s mode", app.address().port, app.settings.env
+	console.log 'clap listening on port', port_clap

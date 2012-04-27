@@ -68,7 +68,7 @@ exports.create_app = (req, res) ->
 			# Create a new client for communicating with the haibu server
 			client = new haibu.drone.Client
 				host: process.env.HOST || '127.0.0.1'
-				port: 9002
+				port: port_haibu
 
 			# A basic package.json for a node.js application on Haibu
 			app_json =
@@ -93,7 +93,7 @@ exports.create_app = (req, res) ->
 					# update proxy with domain and result.drone.port
 					#console.log user, app_name, git, domain
 					#console.log result.drone.port
-					GLOBAL.server.proxy.addHost(domain, 'localhost:'+result.drone.port)
+					server.proxy.addHost(domain, 'localhost:'+result.drone.port)
 					res.json({msg: result})
 
 	else
