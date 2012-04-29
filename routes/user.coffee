@@ -2,6 +2,7 @@ haibu = require("../../haibu/lib/haibu")
 crypto = require("crypto")
 Db = require('mongodb').Db
 Server = require('mongodb').Server
+request = require('request')
 
 
 users = {}
@@ -32,8 +33,7 @@ update_db = (req, res) ->
 	db.open (err, db) ->
 		db.createCollection 'users', (err, collection) ->
 			collection.findAndModify {user: req.session.user.user},  [], {$set:req.session.user}, {new:true, upsert:true}, (err, doc) ->
-				#console.log req.session.user
-				res.redirect("back")
+				db.close()
 
 exports.settings = (req, res) ->
 	if req.session.user
@@ -85,6 +85,11 @@ exports.create_app = (req, res) ->
 				engine:
 					node: "0.6.14"
 
+			console.log req.session.user
+			req.session.user.apps.push
+				name: req.body.app_name
+				app: app_name
+			update_db(req, res)
 			# Attempt to start up a new application
 			client.start app_json, (err, result) ->
 				if err
@@ -129,7 +134,7 @@ exports.new_user = (req, res) ->
 					console.log item
 					if item.coupon == req.body.coupon
 						db.createCollection 'users', (err, collection) ->
-							collection.findAndModify {user: req.body.username},  [], {$set:{email:req.body.email, salt:req.body.coupon, pass:hash(req.body.password, req.body.coupon)}}, {new:true, upsert:true}, (err, doc) ->
+							collection.findAndModify {user: req.body.username},  [], {$set:{email:req.body.email, salt:req.body.coupon, pass:hash(req.body.password, req.body.coupon), apps:[]}}, {new:true, upsert:true}, (err, doc) ->
 								db.close()
 								authenticate req.body.username, req.body.password, (err, user) ->
 									if user
@@ -184,16 +189,19 @@ exports.modify_app = (req, res) ->
 
 exports.apps = (req, res) ->
 	if req.session.user
-		if req.params.id
-			res.render "user",
-				title: "clap.io - user"
-				data: req.session.user
-				locals:
-					id: req.params.id
-		else
-			res.render "user",
-				title: "clap.io - user"
-				data: req.session.user
+		url_apps = "http://localhost:"+port_haibu+"/drones/running/"+req.session.user.user
+		request url_apps, (error, response, body) ->
+			apps = JSON.parse body
+			if not error and response.statusCode is 200
+				res.render "user",
+					title: "clap.io - user"
+					data: req.session.user
+					locals:
+						apps: apps
+			else
+				res.json({err: error})
+		#for app in req.session.user.apps
+
 	else
 		res.redirect "/login"
 

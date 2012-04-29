@@ -4,12 +4,11 @@ block content
 	.box.list-apps
 		h3 your apps
 		ul
+		each app, i in locals.apps
 			li 
 				span.ico.leaf
-				| hola
-			li
-				span.ico.leaf
-				| hola
+				!=app.name
+		//div= locals
 	.box
 		a(name="new")
 		h3 create cluster app
