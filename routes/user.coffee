@@ -105,6 +105,7 @@ exports.get_coupon = (req, res) ->
 			db.createCollection 'coupons', (err, collection) ->
 				coupon = crypto.createHash('sha1').update((new Date()).valueOf().toString() + Math.random().toString()).digest('hex');
 				collection.insert {email: req.body.email, coupon: coupon, date: new Date()}, (err, doc) ->
+					db.close()
 					res.render "coupon",
 						title: "clap.io - coupon"
 						msg: true
@@ -129,6 +130,7 @@ exports.new_user = (req, res) ->
 					if item.coupon == req.body.coupon
 						db.createCollection 'users', (err, collection) ->
 							collection.findAndModify {user: req.body.username},  [], {$set:{email:req.body.email, salt:req.body.coupon, pass:hash(req.body.password, req.body.coupon)}}, {new:true, upsert:true}, (err, doc) ->
+								db.close()
 								authenticate req.body.username, req.body.password, (err, user) ->
 									if user
 										req.session.regenerate ->
