@@ -14,8 +14,8 @@ httpProxy = require '../proxy/lib/node-http-proxy'
 
 data =
 	"router":
-		"clap.io": "localhost:"+cfg.port_clap
-		"api.clap.io": "localhost:"+cfg.port_haibu
+		"clap.io": "localhost:"+cfg.port.clap
+		"api.clap.io": "localhost:"+cfg.port.haibu
 		"ssh.clap.io": "localhost:22"
 		"mongo.clap.io": "localhost:28017"
 
@@ -23,9 +23,8 @@ proxy_config = data
 
 GLOBAL.server = httpProxy.createServer proxy_config
 
-server.listen cfg.port_proxy || 80
-
-console.log 'proxy listening on port', cfg.port_proxy
+server.listen cfg.port.proxy || 80, ->
+	console.log 'proxy listening on port', cfg.port.proxy
 
 
 # haibu
@@ -34,24 +33,23 @@ util = require 'util'
 argv = require('optimist').argv
 haibu = require '../haibu/lib/haibu'
 
-env  = argv.env || 'development'
+env  = argv.env || 'production'
 
 haibu.utils.bin.getAddress argv.a, (err, address) ->
 	options =
 		env: env
-		port: cfg.port_haibu || 4000
+		port: cfg.port.haibu || 4000
 		host: address
 
 	haibu.drone.start options, ->
 		#haibu.utils.showWelcome('api-server', address, port)
-		console.log 'haibu listening on port', cfg.port_haibu
+		console.log 'haibu listening on port', cfg.port.haibu
 
 # clap app
 routes =
 	home: require "./routes/home"
 	user: require "./routes/user"
 
-port = process.env.PORT || port_clap
 app = module.exports = express.createServer()
 
 # Configuration
@@ -97,6 +95,7 @@ app.get "/", routes.home.index
 #app.post "/user/apps/", routes.user.modify_app
 #app.get "/user/apps/", routes.user.apps
 app.get "/register", routes.user.register
+app.get "/register/:email/:coupon", routes.user.register
 app.post "/register", routes.user.new_user
 app.get "/login", routes.user.index
 app.post "/login", routes.user.login
@@ -107,5 +106,5 @@ app.post "/apps", routes.user.create_app
 app.get "/apps/:id", routes.user.apps
 app.all "/logout", routes.user.logout
 
-app.listen cfg.port_clap || 3000, ->
-	console.log 'clap listening on port', cfg.port_clap
+app.listen cfg.port.clap || 3000, ->
+	console.log 'clap listening on port', cfg.port.clap

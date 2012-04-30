@@ -6,14 +6,15 @@ exports.cfg =
 			'192.168.1.27'
 		]
 
-	proxy_port: 80
-	haibu_port: 4000
-	clap_port: 3000
-	mongo_port: 27017		
+	port:
+		proxy : 80
+		haibu: 4000
+		clap: 3000
+		mongo: 27017
 
 	mail:
 		smtp: "smtp.example.com"
 		username: "coupon@example.com"
 		password: "yourpassword"
 		subject: "Coupon from example.com"
-		template: __dirname + '/template/mail.html'
+		template: __dirname + '/template/mail.jade'

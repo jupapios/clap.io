@@ -17,13 +17,13 @@
 							input(type="text", name="username", placeholder="username", required)
 						div
 							span.ico.contact-card
-							input(type="email", name="email", placeholder="email", required)		
+							input(type="email", name="email", placeholder="email", value=locals.email, required)		
 						div
 							span.ico.lock
 							input(type="password", name="password", placeholder="password", required)
 						div
 							span.ico.link
-							input(type="text", name="coupon", placeholder="coupon", required)		
+							input(type="text", name="coupon", placeholder="coupon", value=locals.coupon, required)		
 						div
 							input(type="submit", value="create user").button
 	footer

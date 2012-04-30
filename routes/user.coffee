@@ -3,11 +3,11 @@ crypto = require("crypto")
 Db = require('mongodb').Db
 Server = require('mongodb').Server
 request = require('request')
-mu = require('mu2')
-
+fs =require('fs')
+jade = require('jade')
 
 users = {}
-db = new Db('clap', new Server("127.0.0.1", cfg.mongo_port || 27017, {auto_reconnect: false, poolSize: 4}), {native_parser: false})
+db = new Db('clap', new Server("127.0.0.1", cfg.port.mongo || 27017, {auto_reconnect: false, poolSize: 4}), {native_parser: false})
 
 authenticate = (name, pass, fn) ->
 	db.open (err, db) ->
@@ -67,9 +67,10 @@ exports.create_app = (req, res) ->
 			start = req.body.start
 
 			# Create a new client for communicating with the haibu server
+			# spawn master app
 			client = new haibu.drone.Client
-				host: process.env.HOST || '127.0.0.1'
-				port: port_haibu
+				host: cfg.cluster.master || '127.0.0.1'
+				port: cfg.port.haibu || 4000
 
 			# A basic package.json for a node.js application on Haibu
 			app_json =
@@ -112,10 +113,14 @@ exports.get_coupon = (req, res) ->
 				coupon = crypto.createHash('sha1').update((new Date()).valueOf().toString() + Math.random().toString()).digest('hex');
 				collection.insert {email: req.body.email, coupon: coupon, date: new Date()}, (err, doc) ->
 					db.close()
-					mu.compileAndRender(cfg.mail.template,
-						coupon: coupon
-					).on "data", (data) ->
-						#console.log data.toString()
+					fs.readFile cfg.mail.template, 'utf8', (err, data) ->
+						#console.log err, data
+						throw err if err
+						options = 
+							filename: cfg.mail.template
+						fn = jade.compile data, options
+
+						output = fn {coupon: coupon, email: req.body.email}, (output) ->
 						mail = require("mail").Mail(
 							host: cfg.mail.smtp
 							username: cfg.mail.username
@@ -127,9 +132,8 @@ exports.get_coupon = (req, res) ->
 							to: [ req.body.email ]
 							subject: cfg.mail.subject
 							'Content-Type': 'text/html; charset="ISO-8859-1"'
-						).body(data.toString()).send (err) ->
+						).body(output).send (err) ->
 							throw err if err
-							#console.log "Sent!"
 							res.render "coupon",
 								title: "clap.io - coupon"
 								msg: true
@@ -144,6 +148,9 @@ exports.register = (req, res) ->
 		res.render "register",
 			title: "clap.io - register"
 			msg: false
+			locals:
+				email: req.params.email
+				coupon: req.params.coupon
 
 exports.new_user = (req, res) ->
 	if req.body.username and req.body.password and req.body.email and req.body.coupon
