@@ -19,6 +19,22 @@ data =
 		"ssh.clap.io": "localhost:22"
 		"mongo.clap.io": "localhost:28017"
 
+Server = require('mongodb').Server
+Db = require('mongodb').Db
+db = new Db('clap', new Server("127.0.0.1", cfg.port.mongo || 27017, {auto_reconnect: false, poolSize: 4}), {native_parser: false})
+db.open (err, db) ->
+	if db
+		db.createCollection 'proxy', (err, collection) ->
+			collection.find().toArray (err, docs) ->
+				db.close()
+				if !err
+					for doc in docs
+						server.proxy.addHost doc.domain, doc.router
+				else
+					console.log err
+	else
+		console.log('start db')
+
 proxy_config = data
 
 GLOBAL.server = httpProxy.createServer proxy_config
@@ -102,7 +118,8 @@ app.post "/login", routes.user.login
 app.get "/coupon", routes.user.coupon
 app.post "/coupon", routes.user.get_coupon
 app.get "/apps", routes.user.apps
-app.post "/apps", routes.user.create_app
+app.post "/apps/simple", routes.user.create_app_simple
+app.post "/apps/complex", routes.user.create_app_complex
 app.get "/apps/:id", routes.user.apps
 app.all "/logout", routes.user.logout
 

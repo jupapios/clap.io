@@ -58,7 +58,7 @@ exports.coupon = (req, res) ->
 			title: "clap.io - coupon"
 			msg: false
 
-exports.create_app = (req, res) ->
+exports.create_app_simple = (req, res) ->
 	if req.session.user and req.body.app_name and req.body.git and req.body.domain and req.body.start
 			user = req.session.user.user
 			app_name = user+"_"+req.body.app_name
@@ -97,11 +97,24 @@ exports.create_app = (req, res) ->
 				if err
 					res.json({err: err})
 				else
+					router = 'localhost:'+result.drone.port
 					# update proxy with domain and result.drone.port
 					#console.log user, app_name, git, domain
 					#console.log result.drone.port
-					server.proxy.addHost(domain, 'localhost:'+result.drone.port)
-					res.json({msg: result})
+					db.open (err, db) ->
+						if db
+							db.createCollection 'proxy', (err, collection) ->
+								collection.insert {domain: domain, router: router}, (err, doc) ->
+									db.close()
+									if !err
+										server.proxy.addHost(domain, router)
+										res.json({msg: result})
+									else
+										res.json({err: err})
+										
+						else
+							console.log('start db')
+							res.json({err: '505'})
 
 	else
 		res.json({msg: 'security error'})
@@ -172,6 +185,7 @@ exports.new_user = (req, res) ->
 											title: "clap.io - user"
 											msg: true
 					else
+						db.close()
 						res.json({err: 'invalid coupon'})
 
 	else
@@ -215,7 +229,7 @@ exports.modify_app = (req, res) ->
 
 exports.apps = (req, res) ->
 	if req.session.user
-		url_apps = "http://localhost:"+port_haibu+"/drones/running/"+req.session.user.user
+		url_apps = "http://localhost:"+cfg.port.haibu+"/drones/running/"+req.session.user.user
 		request url_apps, (error, response, body) ->
 			apps = JSON.parse body
 			if not error and response.statusCode is 200
