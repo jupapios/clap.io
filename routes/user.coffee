@@ -7,7 +7,7 @@ mu = require('mu2')
 
 
 users = {}
-db = new Db('clap', new Server("127.0.0.1", 27017, {auto_reconnect: false, poolSize: 4}), {native_parser: false})
+db = new Db('clap', new Server("127.0.0.1", cfg.mongo_port || 27017, {auto_reconnect: false, poolSize: 4}), {native_parser: false})
 
 authenticate = (name, pass, fn) ->
 	db.open (err, db) ->

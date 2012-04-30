@@ -9,18 +9,13 @@ config  = require('./config').cfg
 
 GLOBAL.cfg = config
 
-# Ports
-GLOBAL.port_proxy = 80
-GLOBAL.port_clap = 3000
-GLOBAL.port_haibu = 4000
-
 # Proxy
 httpProxy = require '../proxy/lib/node-http-proxy'
 
 data =
 	"router":
-		"clap.io": "localhost:"+port_clap
-		"api.clap.io": "localhost:"+port_haibu
+		"clap.io": "localhost:"+cfg.port_clap
+		"api.clap.io": "localhost:"+cfg.port_haibu
 		"ssh.clap.io": "localhost:22"
 		"mongo.clap.io": "localhost:28017"
 
@@ -28,9 +23,9 @@ proxy_config = data
 
 GLOBAL.server = httpProxy.createServer proxy_config
 
-server.listen port_proxy
+server.listen cfg.port_proxy || 80
 
-console.log 'proxy listening on port', port_proxy
+console.log 'proxy listening on port', cfg.port_proxy
 
 
 # haibu
@@ -44,12 +39,12 @@ env  = argv.env || 'development'
 haibu.utils.bin.getAddress argv.a, (err, address) ->
 	options =
 		env: env
-		port: port_haibu
+		port: cfg.port_haibu || 4000
 		host: address
 
 	haibu.drone.start options, ->
 		#haibu.utils.showWelcome('api-server', address, port)
-		console.log 'haibu listening on port', port_haibu
+		console.log 'haibu listening on port', cfg.port_haibu
 
 # clap app
 routes =
@@ -112,5 +107,5 @@ app.post "/apps", routes.user.create_app
 app.get "/apps/:id", routes.user.apps
 app.all "/logout", routes.user.logout
 
-app.listen 3000, ->
-	console.log 'clap listening on port', port_clap
+app.listen cfg.port_clap || 3000, ->
+	console.log 'clap listening on port', cfg.port_clap
