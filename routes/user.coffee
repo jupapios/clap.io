@@ -112,25 +112,27 @@ exports.get_coupon = (req, res) ->
 				coupon = crypto.createHash('sha1').update((new Date()).valueOf().toString() + Math.random().toString()).digest('hex');
 				collection.insert {email: req.body.email, coupon: coupon, date: new Date()}, (err, doc) ->
 					db.close()
-					#mail = require("mail").Mail(
-					#	host: cfg.mail.smtp
-					#	username: cfg.mail.username
-					#	password: cfg.mail.password
-					#)
-					#mail.message(
-					#	from: cfg.mail.username
-					#	to: [ req.body.email ]
-					#	subject: cfg.mail.subject
-					#).body("Hi your coupon is "+coupon).send (err) ->
-					#	throw err if err
-						#console.log "Sent!"
 					mu.compileAndRender(cfg.mail.template,
-						coupon: "JAJAJA"
+						coupon: coupon
 					).on "data", (data) ->
-						console.log data.toString()
-					res.render "coupon",
-						title: "clap.io - coupon"
-						msg: true
+						#console.log data.toString()
+						mail = require("mail").Mail(
+							host: cfg.mail.smtp
+							username: cfg.mail.username
+							password: cfg.mail.password
+							mimeTransport: '7BIT'
+						)
+						mail.message(
+							from: cfg.mail.username
+							to: [ req.body.email ]
+							subject: cfg.mail.subject
+							'Content-Type': 'text/html; charset="ISO-8859-1"'
+						).body(data.toString()).send (err) ->
+							throw err if err
+							#console.log "Sent!"
+							res.render "coupon",
+								title: "clap.io - coupon"
+								msg: true
 
 	else
 		res.json({err: 'bad request'})
