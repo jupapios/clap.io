@@ -3,6 +3,7 @@ crypto = require("crypto")
 Db = require('mongodb').Db
 Server = require('mongodb').Server
 request = require('request')
+mu = require('mu2')
 
 
 users = {}
@@ -85,10 +86,10 @@ exports.create_app = (req, res) ->
 				engine:
 					node: "0.6.14"
 
-			console.log req.session.user
+			#console.log req.session.user
 			req.session.user.apps.push
-				name: req.body.app_name
-				app: app_name
+				name: app_name
+				pub_name: req.body.app_name
 			update_db(req, res)
 			# Attempt to start up a new application
 			client.start app_json, (err, result) ->
@@ -111,6 +112,22 @@ exports.get_coupon = (req, res) ->
 				coupon = crypto.createHash('sha1').update((new Date()).valueOf().toString() + Math.random().toString()).digest('hex');
 				collection.insert {email: req.body.email, coupon: coupon, date: new Date()}, (err, doc) ->
 					db.close()
+					#mail = require("mail").Mail(
+					#	host: cfg.mail.smtp
+					#	username: cfg.mail.username
+					#	password: cfg.mail.password
+					#)
+					#mail.message(
+					#	from: cfg.mail.username
+					#	to: [ req.body.email ]
+					#	subject: cfg.mail.subject
+					#).body("Hi your coupon is "+coupon).send (err) ->
+					#	throw err if err
+						#console.log "Sent!"
+					mu.compileAndRender(cfg.mail.template,
+						coupon: "JAJAJA"
+					).on "data", (data) ->
+						console.log data.toString()
 					res.render "coupon",
 						title: "clap.io - coupon"
 						msg: true
@@ -193,6 +210,7 @@ exports.apps = (req, res) ->
 		request url_apps, (error, response, body) ->
 			apps = JSON.parse body
 			if not error and response.statusCode is 200
+				console.log req.session.user.apps, apps
 				res.render "user",
 					title: "clap.io - user"
 					data: req.session.user

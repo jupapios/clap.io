@@ -5,6 +5,9 @@
 express = require 'express'
 stylus = require 'stylus'
 nib = require 'nib'
+config  = require('./config').cfg
+
+GLOBAL.cfg = config
 
 # Ports
 GLOBAL.port_proxy = 80
@@ -21,9 +24,9 @@ data =
 		"ssh.clap.io": "localhost:22"
 		"mongo.clap.io": "localhost:28017"
 
-config = data
+proxy_config = data
 
-GLOBAL.server = httpProxy.createServer config
+GLOBAL.server = httpProxy.createServer proxy_config
 
 server.listen port_proxy
 
