@@ -58,6 +58,103 @@ exports.coupon = (req, res) ->
 			title: "clap.io - coupon"
 			msg: false
 
+exports.create_app_complex = (req, res) ->
+	if req.session.user and req.body.app_name and req.body.git and req.body.domain and req.body.master_start and req.body.node_start and req.body.node_nums
+			user = req.session.user.user
+			app_name = user+"_"+req.body.app_name
+			git = req.body.git
+			domain = req.body.domain+".clap.io"
+			master_start = req.body.master_start
+			node_start = req.body.node_start
+			nums = req.body.node_nums
+
+			# Create a new client for communicating with the haibu server
+			# spawn master app
+			client = new haibu.drone.Client
+				host: cfg.cluster.master || '127.0.0.1'
+				port: cfg.port.haibu || 9002
+
+			# A basic package.json for a node.js application on Haibu
+			app_js =
+				user: user
+				name: app_name
+				domain: domain
+				repository:
+					type: "git"
+					url: git
+
+				scripts:
+					start: master_start
+
+				engine:
+					node: "0.6.14"
+
+			k=0
+			k_len=cfg.cluster.nodes.length
+			nodes = {}
+			app_json = {}
+			for i in [1..nums]
+				k=0 if k==k_len
+
+				# Create a new client for communicating with the haibu server
+				# spawn node app
+				nodes[i] = new haibu.drone.Client
+					host: cfg.cluster.nodes[k]
+					port: 9002
+
+				k++
+
+				# A basic package.json for a node.js application on Haibu
+				app_json[i] =
+					user: user
+					name: app_name+'_'+i
+					domain: i+'.'+domain
+					repository:
+						type: "git"
+						url: git
+
+					scripts:
+						start: node_start
+
+					engine:
+						node: "0.6.14"
+
+				nodes[i].start app_json[i], (err, result) ->
+					console.log err, result
+
+
+			#console.log req.session.user
+			req.session.user.apps.push
+				name: app_name
+				pub_name: req.body.app_name
+			update_db(req, res)
+			# Attempt to start up a new application
+			client.start app_js, (err, result) ->
+				if err
+					res.json({err: err})
+				else
+					router = 'localhost:'+result.drone.port
+					# update proxy with domain and result.drone.port
+					#console.log user, app_name, git, domain
+					#console.log result.drone.port
+					db.open (err, db) ->
+						if db
+							db.createCollection 'proxy', (err, collection) ->
+								collection.insert {domain: domain, router: router}, (err, doc) ->
+									db.close()
+									if !err
+										server.proxy.addHost(domain, router)
+										res.json({msg: result})
+									else
+										res.json({err: err})
+										
+						else
+							console.log('start db')
+							res.json({err: '505'})
+
+	else
+		res.json({msg: 'security error'})			
+
 exports.create_app_simple = (req, res) ->
 	if req.session.user and req.body.app_name and req.body.git and req.body.domain and req.body.start
 			user = req.session.user.user
@@ -170,7 +267,7 @@ exports.new_user = (req, res) ->
 		db.open (err, db) ->
 			db.createCollection 'coupons', (err, collection) ->
 				collection.findOne {'email':req.body.email}, (err, item) ->
-					console.log item
+					#console.log item
 					if item.coupon == req.body.coupon
 						db.createCollection 'users', (err, collection) ->
 							collection.findAndModify {user: req.body.username},  [], {$set:{email:req.body.email, salt:req.body.coupon, pass:hash(req.body.password, req.body.coupon), apps:[]}}, {new:true, upsert:true}, (err, doc) ->
@@ -232,8 +329,9 @@ exports.apps = (req, res) ->
 		url_apps = "http://localhost:"+cfg.port.haibu+"/drones/running/"+req.session.user.user
 		request url_apps, (error, response, body) ->
 			apps = JSON.parse body
+			console.log 'APPSS::: ', apps
 			if not error and response.statusCode is 200
-				console.log req.session.user.apps, apps
+				#console.log req.session.user.apps, apps
 				res.render "user",
 					title: "clap.io - user"
 					data: req.session.user
